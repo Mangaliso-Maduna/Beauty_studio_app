@@ -1,0 +1,10 @@
+{% extends "salon/base.html" %}
+{% block content %}
+<h2>Create Your Account</h2>
+<form method="post" class="styled">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn">Sign Up</button>
+</form>
+<p style="margin-top:16px; color:#8a8181;">Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+{% endblock %}

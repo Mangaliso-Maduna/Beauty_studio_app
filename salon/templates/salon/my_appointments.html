@@ -1,0 +1,27 @@
+{% extends "salon/base.html" %}
+{% block content %}
+<h2>My Appointments</h2>
+{% if appointments %}
+<table>
+    <tr><th>Service</th><th>Date</th><th>Time</th><th>Status</th><th></th></tr>
+    {% for a in appointments %}
+    <tr>
+        <td>{{ a.service.name }}</td>
+        <td>{{ a.date }}</td>
+        <td>{{ a.time }}</td>
+        <td><span class="status status-{{ a.status }}">{{ a.get_status_display }}</span></td>
+        <td>
+            {% if a.status == "pending" or a.status == "confirmed" %}
+            <form action="{% url 'cancel_appointment' a.pk %}" method="post" style="margin:0;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger" style="padding:6px 14px; font-size:0.8rem;">Cancel</button>
+            </form>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p class="empty">You haven't booked any appointments yet. <a href="{% url 'book_appointment' %}">Book one now</a>.</p>
+{% endif %}
+{% endblock %}

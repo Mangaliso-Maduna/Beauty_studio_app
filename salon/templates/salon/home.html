@@ -1,0 +1,40 @@
+{% extends "salon/base.html" %}
+{% block content %}
+<div class="hero" style="margin: -40px -24px 40px; border-radius: 0 0 24px 24px;">
+    <h1>Look Good. Feel Beautiful.</h1>
+    <p>Book your next hair, nails or makeup appointment, or shop our favourite beauty products — all in one place.</p>
+    <a href="{% url 'book_appointment' %}" class="btn">Book an Appointment</a>
+    <a href="{% url 'product_list' %}" class="btn btn-outline" style="margin-left: 10px;">Shop Products</a>
+</div>
+
+<h2 class="section-title">Popular Services</h2>
+<p class="section-sub">A taste of what we offer</p>
+<div class="grid">
+    {% for service in services %}
+    <div class="card">
+        <span class="badge">{{ service.get_category_display }}</span>
+        <h3>{{ service.name }}</h3>
+        <div class="meta">{{ service.duration_minutes }} min</div>
+        <div class="price">R{{ service.price }}</div>
+        <a href="{% url 'book_appointment' %}" class="btn">Book</a>
+    </div>
+    {% empty %}
+    <p class="empty">No services yet — add some in the admin panel.</p>
+    {% endfor %}
+</div>
+
+<h2 class="section-title" style="margin-top:50px;">Featured Products</h2>
+<p class="section-sub">Take the salon home with you</p>
+<div class="grid">
+    {% for product in products %}
+    <div class="card">
+        <h3>{{ product.name }}</h3>
+        <div class="meta">{% if product.in_stock %}{{ product.stock }} in stock{% else %}Out of stock{% endif %}</div>
+        <div class="price">R{{ product.price }}</div>
+        <a href="{% url 'product_list' %}" class="btn">View</a>
+    </div>
+    {% empty %}
+    <p class="empty">No products yet — add some in the admin panel.</p>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "salon/base.html" %}
+{% block content %}
+<h2>My Orders</h2>
+{% if orders %}
+<table>
+    <tr><th>Order</th><th>Items</th><th>Total</th><th>Status</th><th>Date</th></tr>
+    {% for order in orders %}
+    <tr>
+        <td>#{{ order.id }}</td>
+        <td>{% for item in order.items.all %}{{ item.quantity }} x {{ item.product.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+        <td>R{{ order.total }}</td>
+        <td><span class="status status-{{ order.status }}">{{ order.get_status_display }}</span></td>
+        <td>{{ order.created_at|date:"d M Y" }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p class="empty">You haven't bought anything yet. <a href="{% url 'product_list' %}">Browse products</a>.</p>
+{% endif %}
+{% endblock %}

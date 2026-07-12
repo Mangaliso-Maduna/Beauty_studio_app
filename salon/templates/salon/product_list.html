@@ -1,0 +1,30 @@
+{% extends "salon/base.html" %}
+{% block content %}
+<h2 class="section-title">Shop Our Products</h2>
+<p class="section-sub">Salon-quality products, delivered</p>
+<div class="grid">
+    {% for product in products %}
+    <div class="card">
+        <h3>{{ product.name }}</h3>
+        {% if product.description %}<p style="color:#8a8181; font-size:0.9rem;">{{ product.description }}</p>{% endif %}
+        <div class="meta">{% if product.in_stock %}{{ product.stock }} in stock{% else %}Out of stock{% endif %}</div>
+        <div class="price">R{{ product.price }}</div>
+        {% if product.in_stock %}
+            {% if user.is_authenticated %}
+            <form action="{% url 'buy_product' product.pk %}" method="post" style="display:flex; gap:8px; align-items:center;">
+                {% csrf_token %}
+                <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}" style="width:60px; padding:8px; border-radius:8px; border:1px solid #e0d3d3;">
+                <button type="submit" class="btn">Buy Now</button>
+            </form>
+            {% else %}
+            <a href="{% url 'login' %}" class="btn">Log in to buy</a>
+            {% endif %}
+        {% else %}
+            <span class="btn btn-outline" style="opacity:0.6; cursor:not-allowed;">Sold Out</span>
+        {% endif %}
+    </div>
+    {% empty %}
+    <p class="empty">No products available right now.</p>
+    {% endfor %}
+</div>
+{% endblock %}

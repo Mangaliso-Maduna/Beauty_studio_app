@@ -1,0 +1,19 @@
+{% extends "salon/base.html" %}
+{% block content %}
+<h2 class="section-title">Our Services</h2>
+<p class="section-sub">Hair &middot; Nails &middot; Makeup</p>
+<div class="grid">
+    {% for service in services %}
+    <div class="card">
+        <span class="badge">{{ service.get_category_display }}</span>
+        <h3>{{ service.name }}</h3>
+        {% if service.description %}<p style="color:#8a8181; font-size:0.9rem;">{{ service.description }}</p>{% endif %}
+        <div class="meta">{{ service.duration_minutes }} min</div>
+        <div class="price">R{{ service.price }}</div>
+        <a href="{% url 'book_appointment' %}" class="btn">Book</a>
+    </div>
+    {% empty %}
+    <p class="empty">No services available right now.</p>
+    {% endfor %}
+</div>
+{% endblock %}
