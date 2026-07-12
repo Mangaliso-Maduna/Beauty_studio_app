@@ -1,4 +1,4 @@
-# Bella Beauty Studio
+# Mahle's Beauty Studio
 
 A simple Django app for a beauty salon (hair, nails, makeup) where clients can:
 - Browse services and book appointments
