@@ -1,0 +1,16 @@
+{% extends "salon/base.html" %}
+{% block content %}
+<div class="dash-wrap">
+    <div class="dash-sidebar">
+        <a href="{% url 'dashboard_home' %}" class="{% if active == 'home' %}active{% endif %}">Overview</a>
+        <a href="{% url 'dashboard_appointments' %}"
+            class="{% if active == 'appointments' %}active{% endif %}">Appointments</a>
+        <a href="{% url 'dashboard_orders' %}" class="{% if active == 'orders' %}active{% endif %}">Orders</a>
+        <a href="{% url 'dashboard_services' %}" class="{% if active == 'services' %}active{% endif %}">Services</a>
+        <a href="{% url 'dashboard_products' %}" class="{% if active == 'products' %}active{% endif %}">Products</a>
+    </div>
+    <div class="dash-main">
+        {% block dash_content %}{% endblock %}
+    </div>
+</div>
+{% endblock %}

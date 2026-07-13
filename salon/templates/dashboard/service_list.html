@@ -1,0 +1,43 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Manage Services{% endblock %}
+{% block dash_content %}
+<div class="dash-header">
+    <h2 style="margin:0;">Services</h2>
+    <a href="{% url 'dashboard_service_create' %}" class="btn">+ Add Service</a>
+</div>
+
+{% if services %}
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Duration</th>
+        <th>Active</th>
+        <th></th>
+    </tr>
+    {% for s in services %}
+    <tr>
+        <td>{{ s.name }}</td>
+        <td>{{ s.get_category_display }}</td>
+        <td>R{{ s.price }}</td>
+        <td>{{ s.duration_minutes }} min</td>
+        <td>{% if s.active %}<span class="status status-confirmed">Yes</span>{% else %}<span
+                class="status status-cancelled">No</span>{% endif %}</td>
+        <td>
+            <div class="action-row">
+                <a href="{% url 'dashboard_service_edit' s.pk %}" class="btn btn-outline btn-sm">Edit</a>
+                <form action="{% url 'dashboard_service_delete' s.pk %}" method="post" style="margin:0;"
+                    onsubmit="return confirm('Delete {{ s.name }}?');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p class="empty">No services yet. <a href="{% url 'dashboard_service_create' %}">Add your first one</a>.</p>
+{% endif %}
+{% endblock %}

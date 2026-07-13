@@ -1,0 +1,60 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Manage Orders{% endblock %}
+{% block dash_content %}
+<div class="dash-header">
+    <h2 style="margin:0;">Orders</h2>
+</div>
+
+<div class="filter-bar">
+    <a href="{% url 'dashboard_orders' %}" class="{% if not status_filter %}active{% endif %}">All</a>
+    {% for value, label in statuses %}
+    <a href="?status={{ value }}" class="{% if status_filter == value %}active{% endif %}">{{ label }}</a>
+    {% endfor %}
+</div>
+
+{% if orders %}
+<table>
+    <tr>
+        <th>Order</th>
+        <th>Client</th>
+        <th>Items</th>
+        <th>Total</th>
+        <th>Status</th>
+        <th>Date</th>
+        <th>Actions</th>
+    </tr>
+    {% for o in orders %}
+    <tr>
+        <td>#{{ o.id }}</td>
+        <td>{{ o.client.username }}</td>
+        <td style="font-size:0.85rem;">{% for item in o.items.all %}{{ item.quantity }} x {{ item.product.name }}{% if
+            not forloop.last %}, {% endif %}{% endfor %}</td>
+        <td>R{{ o.total }}</td>
+        <td><span class="status status-{{ o.status }}">{{ o.get_status_display }}</span></td>
+        <td>{{ o.created_at|date:"d M Y" }}</td>
+        <td>
+            <div class="action-row">
+                {% if o.status == "pending" %}
+                <form action="{% url 'dashboard_order_status' o.pk 'paid' %}" method="post" style="margin:0;">
+                    {% csrf_token %}<button type="submit" class="btn btn-sm">Mark Paid</button>
+                </form>
+                {% endif %}
+                {% if o.status == "paid" %}
+                <form action="{% url 'dashboard_order_status' o.pk 'fulfilled' %}" method="post" style="margin:0;">
+                    {% csrf_token %}<button type="submit" class="btn btn-sm">Fulfil</button>
+                </form>
+                {% endif %}
+                {% if o.status != "cancelled" and o.status != "fulfilled" %}
+                <form action="{% url 'dashboard_order_status' o.pk 'cancelled' %}" method="post" style="margin:0;">
+                    {% csrf_token %}<button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                </form>
+                {% endif %}
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p class="empty">No orders found.</p>
+{% endif %}
+{% endblock %}

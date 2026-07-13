@@ -1,0 +1,78 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block dash_content %}
+<div class="dash-header">
+    <h2 style="margin:0;">Overview</h2>
+</div>
+
+<div class="stat-grid">
+    <div class="stat-card">
+        <div class="num">{{ pending_appointments }}</div>
+        <div class="label">Pending Appointments</div>
+    </div>
+    <div class="stat-card">
+        <div class="num">{{ today_appointments }}</div>
+        <div class="label">Confirmed Appointments</div>
+    </div>
+    <div class="stat-card">
+        <div class="num">{{ pending_orders }}</div>
+        <div class="label">Pending Orders</div>
+    </div>
+    <div class="stat-card">
+        <div class="num">{{ low_stock_products }}</div>
+        <div class="label">Low Stock Products (&le;5)</div>
+    </div>
+    <div class="stat-card">
+        <div class="num">{{ total_services }}</div>
+        <div class="label">Total Services</div>
+    </div>
+    <div class="stat-card">
+        <div class="num">{{ total_products }}</div>
+        <div class="label">Total Products</div>
+    </div>
+</div>
+
+<h3>Recent Appointments</h3>
+{% if recent_appointments %}
+<table>
+    <tr>
+        <th>Client</th>
+        <th>Service</th>
+        <th>Date</th>
+        <th>Status</th>
+    </tr>
+    {% for a in recent_appointments %}
+    <tr>
+        <td>{{ a.client.username }}</td>
+        <td>{{ a.service.name }}</td>
+        <td>{{ a.date }} {{ a.time }}</td>
+        <td><span class="status status-{{ a.status }}">{{ a.get_status_display }}</span></td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p class="empty">No appointments yet.</p>
+{% endif %}
+
+<h3 style="margin-top:30px;">Recent Orders</h3>
+{% if recent_orders %}
+<table>
+    <tr>
+        <th>Order</th>
+        <th>Client</th>
+        <th>Total</th>
+        <th>Status</th>
+    </tr>
+    {% for o in recent_orders %}
+    <tr>
+        <td>#{{ o.id }}</td>
+        <td>{{ o.client.username }}</td>
+        <td>R{{ o.total }}</td>
+        <td><span class="status status-{{ o.status }}">{{ o.get_status_display }}</span></td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p class="empty">No orders yet.</p>
+{% endif %}
+{% endblock %}

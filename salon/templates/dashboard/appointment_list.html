@@ -1,0 +1,62 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Manage Appointments{% endblock %}
+{% block dash_content %}
+<div class="dash-header">
+    <h2 style="margin:0;">Appointments</h2>
+</div>
+
+<div class="filter-bar">
+    <a href="{% url 'dashboard_appointments' %}" class="{% if not status_filter %}active{% endif %}">All</a>
+    {% for value, label in statuses %}
+    <a href="?status={{ value }}" class="{% if status_filter == value %}active{% endif %}">{{ label }}</a>
+    {% endfor %}
+</div>
+
+{% if appointments %}
+<table>
+    <tr>
+        <th>Client</th>
+        <th>Service</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Status</th>
+        <th>Notes</th>
+        <th>Actions</th>
+    </tr>
+    {% for a in appointments %}
+    <tr>
+        <td>{{ a.client.username }}</td>
+        <td>{{ a.service.name }}</td>
+        <td>{{ a.date }}</td>
+        <td>{{ a.time }}</td>
+        <td><span class="status status-{{ a.status }}">{{ a.get_status_display }}</span></td>
+        <td style="max-width:180px; font-size:0.85rem; color:#8a8181;">{{ a.notes|default:"—"|truncatechars:60 }}</td>
+        <td>
+            <div class="action-row">
+                {% if a.status == "pending" %}
+                <form action="{% url 'dashboard_appointment_status' a.pk 'confirmed' %}" method="post"
+                    style="margin:0;">
+                    {% csrf_token %}<button type="submit" class="btn btn-sm">Confirm</button>
+                </form>
+                {% endif %}
+                {% if a.status == "confirmed" %}
+                <form action="{% url 'dashboard_appointment_status' a.pk 'completed' %}" method="post"
+                    style="margin:0;">
+                    {% csrf_token %}<button type="submit" class="btn btn-sm">Complete</button>
+                </form>
+                {% endif %}
+                {% if a.status != "cancelled" and a.status != "completed" %}
+                <form action="{% url 'dashboard_appointment_status' a.pk 'cancelled' %}" method="post"
+                    style="margin:0;">
+                    {% csrf_token %}<button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                </form>
+                {% endif %}
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p class="empty">No appointments found.</p>
+{% endif %}
+{% endblock %}
