@@ -5,7 +5,7 @@
 <form method="post" class="styled" enctype="multipart/form-data">
     {% csrf_token %}
     {% if form.instance.image %}
-    <p><img src="{{ form.instance.image.url }}" class="thumb" style="width:80px; height:80px;"></p>
+        <p><img src="{{ form.instance.image.url }}" class="thumb" style="width:80px; height:80px;"></p>
     {% endif %}
     {{ form.as_p }}
     <button type="submit" class="btn">Save</button>

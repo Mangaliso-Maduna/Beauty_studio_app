@@ -14,21 +14,12 @@
 
 {% if orders %}
 <table>
-    <tr>
-        <th>Order</th>
-        <th>Client</th>
-        <th>Items</th>
-        <th>Total</th>
-        <th>Status</th>
-        <th>Date</th>
-        <th>Actions</th>
-    </tr>
+    <tr><th>Order</th><th>Client</th><th>Items</th><th>Total</th><th>Status</th><th>Date</th><th>Actions</th></tr>
     {% for o in orders %}
     <tr>
         <td>#{{ o.id }}</td>
         <td>{{ o.client.username }}</td>
-        <td style="font-size:0.85rem;">{% for item in o.items.all %}{{ item.quantity }} x {{ item.product.name }}{% if
-            not forloop.last %}, {% endif %}{% endfor %}</td>
+        <td style="font-size:0.85rem;">{% for item in o.items.all %}{{ item.quantity }} x {{ item.product.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
         <td>R{{ o.total }}</td>
         <td><span class="status status-{{ o.status }}">{{ o.get_status_display }}</span></td>
         <td>{{ o.created_at|date:"d M Y" }}</td>

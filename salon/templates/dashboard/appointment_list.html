@@ -14,15 +14,7 @@
 
 {% if appointments %}
 <table>
-    <tr>
-        <th>Client</th>
-        <th>Service</th>
-        <th>Date</th>
-        <th>Time</th>
-        <th>Status</th>
-        <th>Notes</th>
-        <th>Actions</th>
-    </tr>
+    <tr><th>Client</th><th>Service</th><th>Date</th><th>Time</th><th>Status</th><th>Notes</th><th>Actions</th></tr>
     {% for a in appointments %}
     <tr>
         <td>{{ a.client.username }}</td>
@@ -34,20 +26,17 @@
         <td>
             <div class="action-row">
                 {% if a.status == "pending" %}
-                <form action="{% url 'dashboard_appointment_status' a.pk 'confirmed' %}" method="post"
-                    style="margin:0;">
+                <form action="{% url 'dashboard_appointment_status' a.pk 'confirmed' %}" method="post" style="margin:0;">
                     {% csrf_token %}<button type="submit" class="btn btn-sm">Confirm</button>
                 </form>
                 {% endif %}
                 {% if a.status == "confirmed" %}
-                <form action="{% url 'dashboard_appointment_status' a.pk 'completed' %}" method="post"
-                    style="margin:0;">
+                <form action="{% url 'dashboard_appointment_status' a.pk 'completed' %}" method="post" style="margin:0;">
                     {% csrf_token %}<button type="submit" class="btn btn-sm">Complete</button>
                 </form>
                 {% endif %}
                 {% if a.status != "cancelled" and a.status != "completed" %}
-                <form action="{% url 'dashboard_appointment_status' a.pk 'cancelled' %}" method="post"
-                    style="margin:0;">
+                <form action="{% url 'dashboard_appointment_status' a.pk 'cancelled' %}" method="post" style="margin:0;">
                     {% csrf_token %}<button type="submit" class="btn btn-danger btn-sm">Cancel</button>
                 </form>
                 {% endif %}

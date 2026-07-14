@@ -35,12 +35,7 @@
 <h3>Recent Appointments</h3>
 {% if recent_appointments %}
 <table>
-    <tr>
-        <th>Client</th>
-        <th>Service</th>
-        <th>Date</th>
-        <th>Status</th>
-    </tr>
+    <tr><th>Client</th><th>Service</th><th>Date</th><th>Status</th></tr>
     {% for a in recent_appointments %}
     <tr>
         <td>{{ a.client.username }}</td>
@@ -57,12 +52,7 @@
 <h3 style="margin-top:30px;">Recent Orders</h3>
 {% if recent_orders %}
 <table>
-    <tr>
-        <th>Order</th>
-        <th>Client</th>
-        <th>Total</th>
-        <th>Status</th>
-    </tr>
+    <tr><th>Order</th><th>Client</th><th>Total</th><th>Status</th></tr>
     {% for o in recent_orders %}
     <tr>
         <td>#{{ o.id }}</td>
